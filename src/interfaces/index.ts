@@ -1,11 +1,11 @@
-import {ToXmlSchema} from './xmlFunction';
-import {EdmNamespace} from '../Namespace';
-import {EdmType} from './EdmTypes';
+import type {EdmNamespace} from '../Namespace';
+import type {EdmType} from './EdmTypes';
+import type {ToXmlSchema} from './xmlFunction';
 
 export abstract class AbstractEdmClass implements ToXmlSchema {
 	public readonly name: string;
 	public readonly namespace: EdmNamespace;
-	constructor(name: string, namespace: EdmNamespace) {
+	public constructor(name: string, namespace: EdmNamespace) {
 		this.name = name;
 		this.namespace = namespace;
 	}

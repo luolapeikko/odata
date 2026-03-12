@@ -1,6 +1,6 @@
-import {EdmOnDelete} from './OnDelete';
-import {EdmPropertyBase} from '.';
-import {EdmReferentialConstraint} from './ReferentialConstraint';
+import type {EdmPropertyBase} from '.';
+import type {EdmOnDelete} from './OnDelete';
+import type {EdmReferentialConstraint} from './ReferentialConstraint';
 
 export interface EdmNavigationProperty extends EdmPropertyBase {
 	stype: 'Edm.NavigationProperty';

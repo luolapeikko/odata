@@ -1,7 +1,7 @@
 import {AbstractEdmClass} from './interfaces';
 import {isEdmType} from './interfaces/EdmTypes';
-import {EdmProperty} from './interfaces/Property';
-import {EdmNamespace} from './Namespace';
+import type {EdmProperty} from './interfaces/Property';
+import type {EdmNamespace} from './Namespace';
 
 type ComplexTypeProperties = {
 	name: string;
@@ -27,7 +27,7 @@ type ComplexTypeProperties = {
 export class EdmComplexType<T extends Record<string, unknown> = Record<string, unknown>> extends AbstractEdmClass {
 	public readonly props: ComplexTypeProperties;
 	public readonly schema: Record<keyof T, EdmProperty>;
-	constructor(schema: Record<keyof T, EdmProperty>, props: ComplexTypeProperties) {
+	public constructor(schema: Record<keyof T, EdmProperty>, props: ComplexTypeProperties) {
 		super(props.name, props.namespace);
 		this.props = props;
 		this.schema = schema;
@@ -45,25 +45,26 @@ export class EdmComplexType<T extends Record<string, unknown> = Record<string, u
 		if (this.props.basetype) {
 			complexType.setAttribute('BaseType', `${this.props.basetype.namespace.alias}.${this.props.basetype.name}`);
 		}
-		Object.entries(this.schema)
-			.map(([name, property]) => {
-				const element = doc.createElement('Property');
-				element.setAttribute('Name', name);
-				if (property.nullable) {
-					element.setAttribute('Nullable', 'true');
-				}
-				if (isEdmType(property.type)) {
-					element.setAttribute('Type', property.type);
+		const elements = Object.entries(this.schema).map(([name, property]) => {
+			const element = doc.createElement('Property');
+			element.setAttribute('Name', name);
+			if (property.nullable) {
+				element.setAttribute('Nullable', 'true');
+			}
+			if (isEdmType(property.type)) {
+				element.setAttribute('Type', property.type);
+			} else {
+				if (Array.isArray(property.type)) {
+					element.setAttribute('Type', `Collection(${property.type[0].namespace.alias}.${property.type[0].name})`);
 				} else {
-					if (Array.isArray(property.type)) {
-						element.setAttribute('Type', 'Collection(' + property.type[0].namespace.alias + '.' + property.type[0].name + ')');
-					} else {
-						element.setAttribute('Type', `${property.type.namespace.alias}.${property.type.name}`);
-					}
+					element.setAttribute('Type', `${property.type.namespace.alias}.${property.type.name}`);
 				}
-				return element;
-			})
-			.forEach((children) => complexType.appendChild(children));
+			}
+			return element;
+		});
+		for (const children of elements) {
+			complexType.appendChild(children);
+		}
 		return complexType;
 	}
 }

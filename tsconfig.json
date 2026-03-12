@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "lib": ["esnext", "DOM"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "sourceRoot": "./src",
+    "types": ["node"],
+    "declaration": true,
+    "removeComments": false,
+    "inlineSources": false,
+    "inlineSourceMap": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "noUncheckedIndexedAccess": true,
+    "importHelpers": false,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "strict": true,
+    "erasableSyntaxOnly": true,
+    "isolatedDeclarations": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "**/*.spec.ts", "dist"]
+}

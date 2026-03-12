@@ -1,5 +1,5 @@
 export const edmTypes = ['Edm.String', 'Edm.Boolean', 'Edm.Guid', 'Edm.Int32', 'Edm.Int64'] as const;
-export type EdmSingletonType = typeof edmTypes[number];
+export type EdmSingletonType = (typeof edmTypes)[number];
 
 export function isEdmSingletonType(type: string): type is EdmSingletonType {
 	return edmTypes.includes(type as EdmSingletonType);

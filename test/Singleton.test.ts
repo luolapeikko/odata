@@ -1,11 +1,10 @@
+import {describe, expect, it} from 'vitest';
 import {DOMImplementation} from 'xmldom';
-import {expect} from 'chai';
-import 'mocha';
-import {EdmNamespace} from '../src/Namespace';
-import {EdmSingleton} from '../src/Singleton';
-import {EdmEntityType} from '../src/EntityType';
 import {EdmComplexType} from '../src/ComplexType';
 import {EdmEntityContainer} from '../src/EntityContainer';
+import {EdmEntityType} from '../src/EntityType';
+import {EdmNamespace} from '../src/Namespace';
+import {EdmSingleton} from '../src/Singleton';
 
 interface IDemo extends Record<string, unknown> {
 	name: string;

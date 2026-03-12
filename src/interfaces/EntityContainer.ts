@@ -1,5 +1,5 @@
-import {EdmEntrySet} from '../EntrySet';
-import {EdmSingleton} from '../Singleton';
+import type {EdmEntrySet} from '../EntrySet';
+import type {EdmSingleton} from '../Singleton';
 
 export interface EntityContainer {
 	name: string;

@@ -1,15 +1,15 @@
-import {ToXmlSchema} from './interfaces/xmlFunction';
+import type {ToXmlSchema} from './interfaces/xmlFunction';
 
 export class EdmNamespace implements ToXmlSchema {
 	public readonly namespace: string;
 	public readonly alias: string;
 	public readonly elements: ToXmlSchema[] = [];
 
-	constructor(namespace: string, alias: string) {
+	public constructor(namespace: string, alias: string) {
 		this.namespace = namespace;
 		this.alias = alias;
 	}
-	public addType(type: ToXmlSchema) {
+	public addType(type: ToXmlSchema): void {
 		this.elements.push(type);
 	}
 	public toXMLSchema(doc: XMLDocument): Element {
@@ -21,7 +21,9 @@ export class EdmNamespace implements ToXmlSchema {
 		const schema = doc.createElementNS('http://docs.oasis-open.org/odata/ns/edm', 'Schema');
 		schema.setAttribute('Namespace', this.namespace);
 		schema.setAttribute('Alias', this.alias);
-		this.elements.forEach((e) => schema.appendChild(e.toXMLSchema(doc)));
+		for (const e of this.elements) {
+			schema.appendChild(e.toXMLSchema(doc));
+		}
 		edmDataServices.appendChild(schema);
 		return edmXml;
 	}

@@ -1,7 +1,7 @@
-import {EdmComplexType} from './ComplexType';
-import {EdmEntityType} from './EntityType';
+import type {EdmComplexType} from './ComplexType';
+import type {EdmEntityType} from './EntityType';
 import {AbstractEdmClass} from './interfaces';
-import {EdmNamespace} from './Namespace';
+import type {EdmNamespace} from './Namespace';
 
 type SingletonElement<T extends Record<string, unknown> = Record<string, unknown>> = EdmComplexType<T> | EdmEntityType<T>;
 
@@ -9,7 +9,7 @@ export class EdmSingleton<T extends Record<string, unknown> = Record<string, unk
 	public element: SingletonElement<T>;
 	public stype = 'Edm.Singleton';
 	public namespace: EdmNamespace;
-	constructor(name: string, element: SingletonElement<T>, namespace: EdmNamespace) {
+	public constructor(name: string, element: SingletonElement<T>, namespace: EdmNamespace) {
 		super(name, namespace);
 		this.element = element;
 		this.namespace = namespace;

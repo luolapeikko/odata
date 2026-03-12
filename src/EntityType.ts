@@ -1,9 +1,9 @@
 import {AbstractEdmClass} from './interfaces';
 import {isEdmType} from './interfaces/EdmTypes';
-import {EdmProperty} from './interfaces/Property';
-import {EdmNavigationProperty} from './interfaces/NavigationProperty';
-import {EdmNamespace} from './Namespace';
-import {EdmPropertyRef} from './interfaces/PropertyRef';
+import type {EdmNavigationProperty} from './interfaces/NavigationProperty';
+import type {EdmProperty} from './interfaces/Property';
+import type {EdmPropertyRef} from './interfaces/PropertyRef';
+import type {EdmNamespace} from './Namespace';
 
 type EntityTypeProperties<T extends Record<string, unknown>> = {
 	name: string;
@@ -46,7 +46,7 @@ type EntityTypeProperties<T extends Record<string, unknown>> = {
 export class EdmEntityType<T extends Record<string, unknown> = Record<string, unknown>> extends AbstractEdmClass {
 	public readonly props: EntityTypeProperties<T>;
 	public readonly schema: Record<keyof T, EdmProperty | EdmNavigationProperty>;
-	constructor(schema: Record<keyof T, EdmProperty | EdmNavigationProperty>, props: EntityTypeProperties<T>) {
+	public constructor(schema: Record<keyof T, EdmProperty | EdmNavigationProperty>, props: EntityTypeProperties<T>) {
 		super(props.name, props.namespace);
 		this.props = props;
 		this.schema = schema;
@@ -76,46 +76,47 @@ export class EdmEntityType<T extends Record<string, unknown> = Record<string, un
 			});
 			entityType.appendChild(key);
 		}
-		Object.entries(this.schema)
-			.map(([name, property]) => {
-				const element = doc.createElement(property.stype === 'Edm.Property' ? 'Property' : 'NavigationProperty');
-				element.setAttribute('Name', name);
-				if (property.nullable) {
-					element.setAttribute('Nullable', 'true');
+		const data = Object.entries(this.schema).map(([name, property]) => {
+			const element = doc.createElement(property.stype === 'Edm.Property' ? 'Property' : 'NavigationProperty');
+			element.setAttribute('Name', name);
+			if (property.nullable) {
+				element.setAttribute('Nullable', 'true');
+			}
+			if (property.stype === 'Edm.NavigationProperty') {
+				if (property.containsTarget) {
+					element.setAttribute('ContainsTarget', 'true');
 				}
-				if (property.stype === 'Edm.NavigationProperty') {
-					if (property.containsTarget) {
-						element.setAttribute('ContainsTarget', 'true');
-					}
-					if (property.partner) {
-						element.setAttribute('Partner', property.partner);
-					}
-					if (property.referentialConstraint) {
-						for (const constraint of property.referentialConstraint) {
-							const refConstraint = doc.createElement('ReferentialConstraint');
-							refConstraint.setAttribute('Property', constraint.property);
-							refConstraint.setAttribute('ReferencedProperty', constraint.referencedProperty);
-							element.appendChild(refConstraint);
-						}
-					}
-					if (property.onDelete) {
-						const onDelete = doc.createElement('OnDelete');
-						onDelete.setAttribute('Action', property.onDelete.action);
-						element.appendChild(onDelete);
+				if (property.partner) {
+					element.setAttribute('Partner', property.partner);
+				}
+				if (property.referentialConstraint) {
+					for (const constraint of property.referentialConstraint) {
+						const refConstraint = doc.createElement('ReferentialConstraint');
+						refConstraint.setAttribute('Property', constraint.property);
+						refConstraint.setAttribute('ReferencedProperty', constraint.referencedProperty);
+						element.appendChild(refConstraint);
 					}
 				}
-				if (isEdmType(property.type)) {
-					element.setAttribute('Type', property.type);
+				if (property.onDelete) {
+					const onDelete = doc.createElement('OnDelete');
+					onDelete.setAttribute('Action', property.onDelete.action);
+					element.appendChild(onDelete);
+				}
+			}
+			if (isEdmType(property.type)) {
+				element.setAttribute('Type', property.type);
+			} else {
+				if (Array.isArray(property.type)) {
+					element.setAttribute('Type', `Collection(${property.type[0].namespace.alias}.${property.type[0].name})`);
 				} else {
-					if (Array.isArray(property.type)) {
-						element.setAttribute('Type', 'Collection(' + property.type[0].namespace.alias + '.' + property.type[0].name + ')');
-					} else {
-						element.setAttribute('Type', `${property.type.namespace.alias}.${property.type.name}`);
-					}
+					element.setAttribute('Type', `${property.type.namespace.alias}.${property.type.name}`);
 				}
-				return element;
-			})
-			.forEach((children) => entityType.appendChild(children));
+			}
+			return element;
+		});
+		for (const children of data) {
+			entityType.appendChild(children);
+		}
 		return entityType;
 	}
 }

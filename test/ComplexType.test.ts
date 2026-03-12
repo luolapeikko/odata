@@ -1,9 +1,8 @@
-import {DOMImplementation} from 'xmldom';
+import {describe, expect, it} from 'vitest';
 import format from 'xml-formatter';
-import {expect} from 'chai';
-import 'mocha';
+import {DOMImplementation} from 'xmldom';
 import {EdmComplexType} from '../src/ComplexType';
-import {AbstractEdmClass} from '../src/interfaces';
+import type {AbstractEdmClass} from '../src/interfaces';
 import {EdmNamespace} from '../src/Namespace';
 
 const fopts = {indentation: '  ', lineSeparator: '\n'};

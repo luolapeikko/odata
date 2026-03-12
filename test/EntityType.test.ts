@@ -1,10 +1,10 @@
-import {DOMImplementation} from 'xmldom';
+import {describe, expect, it} from 'vitest';
 import format from 'xml-formatter';
-import {expect} from 'chai';
-import 'mocha';
+import {DOMImplementation} from 'xmldom';
 import {EdmEntityType} from '../src/EntityType';
-import {AbstractEdmClass} from '../src/interfaces';
+import type {AbstractEdmClass} from '../src/interfaces';
 import {EdmNamespace} from '../src/Namespace';
+
 /* import {EdmEntityContainer} from '../src/EntityContainer';
 import {EdmSingleton} from '../src/Singleton'; */
 

@@ -1,5 +1,5 @@
-import {EdmParameter} from './interfaces/Parameter';
-import {EdmReturnType} from './interfaces/ReturnType';
+import type {EdmParameter} from './interfaces/Parameter';
+import type {EdmReturnType} from './interfaces/ReturnType';
 
 export interface EdmAction {
 	name: string;

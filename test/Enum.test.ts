@@ -1,6 +1,5 @@
+import {describe, expect, it} from 'vitest';
 import {DOMImplementation} from 'xmldom';
-import {expect} from 'chai';
-import 'mocha';
 import {EdmEnum} from '../src/Enum';
 import {EdmNamespace} from '../src/Namespace';
 
