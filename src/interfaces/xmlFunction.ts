@@ -1,3 +1,5 @@
+import type {Document, Node} from '@xmldom/xmldom';
+
 export interface ToXmlSchema {
-	toXMLSchema(doc: XMLDocument): Element;
+	toXMLSchema(doc: Document): Node;
 }

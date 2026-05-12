@@ -1,3 +1,4 @@
+import type {Document, Node} from '@xmldom/xmldom';
 import {AbstractEdmClass} from './interfaces';
 import {isEdmType} from './interfaces/EdmTypes';
 import type {EdmNavigationProperty} from './interfaces/NavigationProperty';
@@ -52,7 +53,7 @@ export class EdmEntityType<T extends Record<string, unknown> = Record<string, un
 		this.schema = schema;
 		this.props.namespace.addType(this);
 	}
-	public toXMLSchema(doc: XMLDocument): Element {
+	public toXMLSchema(doc: Document): Node {
 		const entityType = doc.createElement('EntityType');
 		entityType.setAttribute('Name', this.name);
 		if (this.props.opentype) {

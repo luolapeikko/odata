@@ -1,3 +1,4 @@
+import type {Document, Node} from '@xmldom/xmldom';
 import {AbstractEdmClass} from './interfaces';
 import {isEdmType} from './interfaces/EdmTypes';
 import type {EdmProperty} from './interfaces/Property';
@@ -33,7 +34,7 @@ export class EdmComplexType<T extends Record<string, unknown> = Record<string, u
 		this.schema = schema;
 		this.props.namespace.addType(this);
 	}
-	public toXMLSchema(doc: XMLDocument): Element {
+	public toXMLSchema(doc: Document): Node {
 		const complexType = doc.createElement('ComplexType');
 		complexType.setAttribute('Name', this.name);
 		if (this.props.opentype) {

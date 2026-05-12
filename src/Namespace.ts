@@ -1,3 +1,4 @@
+import type {Document, Node} from '@xmldom/xmldom';
 import type {ToXmlSchema} from './interfaces/xmlFunction';
 
 export class EdmNamespace implements ToXmlSchema {
@@ -12,7 +13,7 @@ export class EdmNamespace implements ToXmlSchema {
 	public addType(type: ToXmlSchema): void {
 		this.elements.push(type);
 	}
-	public toXMLSchema(doc: XMLDocument): Element {
+	public toXMLSchema(doc: Document): Node {
 		const edmXml = doc.createElementNS('http://docs.oasis-open.org/odata/ns/edmx', 'edmx:Edmx');
 		edmXml.setAttribute('Version', '4.0');
 		const edmDataServices = doc.createElement('edmx:DataServices');

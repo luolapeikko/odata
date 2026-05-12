@@ -1,7 +1,7 @@
 import {describe, expect, it} from 'vitest';
-import {DOMImplementation} from 'xmldom';
 import {EdmEnum} from '../src/Enum';
 import {EdmNamespace} from '../src/Namespace';
+import {createEmptyXmlDocument} from './utils/xml';
 
 enum Demo {
 	one = 1,
@@ -12,7 +12,7 @@ enum Demo {
 describe('ODataEnum', () => {
 	it('should build Enum XML', () => {
 		const namespace = new EdmNamespace('Demo', 'demo');
-		const doc = new DOMImplementation().createDocument(null, null, null);
+		const doc = createEmptyXmlDocument();
 		const enumClass = new EdmEnum('Demo', namespace, Demo);
 		doc.appendChild(enumClass.toXMLSchema(doc));
 		expect(doc.toString()).to.equal(

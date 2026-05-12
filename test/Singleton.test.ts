@@ -1,10 +1,10 @@
 import {describe, expect, it} from 'vitest';
-import {DOMImplementation} from 'xmldom';
 import {EdmComplexType} from '../src/ComplexType';
 import {EdmEntityContainer} from '../src/EntityContainer';
 import {EdmEntityType} from '../src/EntityType';
 import {EdmNamespace} from '../src/Namespace';
 import {EdmSingleton} from '../src/Singleton';
+import {createEmptyXmlDocument} from './utils/xml';
 
 interface IDemo extends Record<string, unknown> {
 	name: string;
@@ -14,7 +14,7 @@ interface IDemo extends Record<string, unknown> {
 describe('EdmSingleton', () => {
 	it('should add EntityType to Singleton', () => {
 		const namespace = new EdmNamespace('unittest.ns', 'ns');
-		const doc = new DOMImplementation().createDocument(null, null, null);
+		const doc = createEmptyXmlDocument();
 		const entity = new EdmEntityType<IDemo>(
 			{
 				name: {type: 'Edm.String', stype: 'Edm.Property'},
@@ -29,7 +29,7 @@ describe('EdmSingleton', () => {
 	});
 	it('should add ComplexType to Singleton', () => {
 		const namespace = new EdmNamespace('unittest.ns', 'ns');
-		const doc = new DOMImplementation().createDocument(null, null, null);
+		const doc = createEmptyXmlDocument();
 		const complex = new EdmComplexType<IDemo>(
 			{
 				name: {type: 'Edm.String', stype: 'Edm.Property'},

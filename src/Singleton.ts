@@ -1,3 +1,4 @@
+import type {Document, Node} from '@xmldom/xmldom';
 import type {EdmComplexType} from './ComplexType';
 import type {EdmEntityType} from './EntityType';
 import {AbstractEdmClass} from './interfaces';
@@ -15,7 +16,7 @@ export class EdmSingleton<T extends Record<string, unknown> = Record<string, unk
 		this.namespace = namespace;
 		this.namespace.addType(this);
 	}
-	public toXMLSchema(doc: XMLDocument): Element {
+	public toXMLSchema(doc: Document): Node {
 		const singleton = doc.createElement('Singleton');
 		singleton.setAttribute('Name', this.name);
 		singleton.setAttribute('Type', `${this.element.namespace.namespace}.${this.element.name}`);

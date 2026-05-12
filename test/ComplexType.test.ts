@@ -1,9 +1,9 @@
 import {describe, expect, it} from 'vitest';
 import format from 'xml-formatter';
-import {DOMImplementation} from 'xmldom';
 import {EdmComplexType} from '../src/ComplexType';
 import type {AbstractEdmClass} from '../src/interfaces';
 import {EdmNamespace} from '../src/Namespace';
+import {createEmptyXmlDocument} from './utils/xml';
 
 const fopts = {indentation: '  ', lineSeparator: '\n'};
 
@@ -40,7 +40,7 @@ describe('ODataComplexType', () => {
 			},
 			{name: 'Demo', namespace},
 		);
-		const doc = new DOMImplementation().createDocument(null, null, null);
+		const doc = createEmptyXmlDocument();
 		doc.appendChild(demo.toXMLSchema(doc));
 		expect(doc.toString()).to.equal(
 			'<ComplexType Name="Demo"><Property Name="name" Type="Edm.String"/><Property Name="value" Type="Edm.Int32"/><Property Name="link" Type="demo.Link"/></ComplexType>',
@@ -62,7 +62,7 @@ describe('ODataComplexType', () => {
 			},
 			{name: 'Demo', namespace},
 		);
-		const doc = new DOMImplementation().createDocument(null, null, null);
+		const doc = createEmptyXmlDocument();
 		doc.appendChild(demo.toXMLSchema(doc));
 		expect(`\n${format(doc.toString(), fopts)}`).to.equal(
 			`
@@ -73,7 +73,7 @@ describe('ODataComplexType', () => {
 </ComplexType>`,
 		);
 
-		const fullDoc = new DOMImplementation().createDocument(null, null, null);
+		const fullDoc = createEmptyXmlDocument();
 		fullDoc.appendChild(namespace.toXMLSchema(doc));
 		expect(`\n${format(fullDoc.toString(), fopts)}`).to.equal(
 			`

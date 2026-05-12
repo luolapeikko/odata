@@ -1,3 +1,4 @@
+import type {Document, Node} from '@xmldom/xmldom';
 import {AbstractEdmClass} from './interfaces';
 import type {EdmNamespace} from './Namespace';
 
@@ -10,7 +11,7 @@ export class EdmEnum extends AbstractEdmClass {
 		this.enumValues = enumValues;
 		namespace.addType(this);
 	}
-	public toXMLSchema(doc: XMLDocument): Element {
+	public toXMLSchema(doc: Document): Node {
 		const enumType = doc.createElement('EnumType');
 		enumType.setAttribute('Name', this.name);
 		// store enum names and values to Members

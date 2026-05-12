@@ -1,9 +1,9 @@
 import {describe, expect, it} from 'vitest';
 import format from 'xml-formatter';
-import {DOMImplementation} from 'xmldom';
 import {EdmEntityType} from '../src/EntityType';
 import type {AbstractEdmClass} from '../src/interfaces';
 import {EdmNamespace} from '../src/Namespace';
+import {createEmptyXmlDocument} from './utils/xml';
 
 /* import {EdmEntityContainer} from '../src/EntityContainer';
 import {EdmSingleton} from '../src/Singleton'; */
@@ -43,7 +43,7 @@ describe('ODataEntityType', () => {
 			},
 			{name: 'Demo', namespace, key: [{name: 'name'}]},
 		);
-		const doc = new DOMImplementation().createDocument(null, null, null);
+		const doc = createEmptyXmlDocument();
 		doc.appendChild(demo.toXMLSchema(doc));
 		expect(doc.toString()).to.equal(
 			'<EntityType Name="Demo"><Key><PropertyRef Name="name"/></Key><Property Name="name" Type="Edm.String"/><Property Name="value" Type="Edm.Int32"/><Property Name="link" Type="demo.Link"/></EntityType>',
@@ -67,13 +67,13 @@ describe('ODataEntityType', () => {
 			{name: 'Demo', namespace, key: [{name: 'name'}]},
 		);
 		// const container = new EdmEntityContainer([new EdmSingleton('link', namespace, ''), demo], {name: 'Demo', namespace});
-		const doc = new DOMImplementation().createDocument(null, null, null);
+		const doc = createEmptyXmlDocument();
 		doc.appendChild(demo.toXMLSchema(doc));
 		expect(doc.toString()).to.equal(
 			'<EntityType Name="Demo"><Key><PropertyRef Name="name"/></Key><Property Name="name" Type="Edm.String"/><Property Name="value" Type="Edm.Int32"/><Property Name="link" Type="Collection(demo.Link)"/></EntityType>',
 		);
 
-		const fullDoc = new DOMImplementation().createDocument(null, null, null);
+		const fullDoc = createEmptyXmlDocument();
 		fullDoc.appendChild(namespace.toXMLSchema(doc));
 		expect(`\n${format(fullDoc.toString(), fopts)}`).to.equal(
 			`

@@ -1,3 +1,4 @@
+import type {Document, Node} from '@xmldom/xmldom';
 import type {EdmNamespace} from '../Namespace';
 import type {EdmType} from './EdmTypes';
 import type {ToXmlSchema} from './xmlFunction';
@@ -9,7 +10,7 @@ export abstract class AbstractEdmClass implements ToXmlSchema {
 		this.name = name;
 		this.namespace = namespace;
 	}
-	public abstract toXMLSchema(doc: XMLDocument): Element;
+	public abstract toXMLSchema(doc: Document): Node;
 }
 
 export interface EdmPropertyBase {

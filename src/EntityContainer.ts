@@ -1,3 +1,4 @@
+import type {Document, Node} from '@xmldom/xmldom';
 import type {EdmEntrySet} from './EntrySet';
 import {AbstractEdmClass} from './interfaces';
 import type {EdmNamespace} from './Namespace';
@@ -19,7 +20,7 @@ export class EdmEntityContainer<T extends Record<string, unknown> = Record<strin
 		this.items = items;
 		this.props.namespace.addType(this);
 	}
-	public toXMLSchema(doc: XMLDocument): Element {
+	public toXMLSchema(doc: Document): Node {
 		const container = doc.createElement('EntityContainer');
 		container.setAttribute('Name', this.props.name);
 		for (const item of this.items) {
