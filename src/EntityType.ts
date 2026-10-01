@@ -1,4 +1,4 @@
-import type {Document, Node} from '@xmldom/xmldom';
+import type {Document, Element, Node} from '@xmldom/xmldom';
 import {AbstractEdmClass} from './interfaces';
 import {isEdmType} from './interfaces/EdmTypes';
 import type {EdmNavigationProperty} from './interfaces/NavigationProperty';
@@ -84,25 +84,7 @@ export class EdmEntityType<T extends Record<string, unknown> = Record<string, un
 				element.setAttribute('Nullable', 'true');
 			}
 			if (property.stype === 'Edm.NavigationProperty') {
-				if (property.containsTarget) {
-					element.setAttribute('ContainsTarget', 'true');
-				}
-				if (property.partner) {
-					element.setAttribute('Partner', property.partner);
-				}
-				if (property.referentialConstraint) {
-					for (const constraint of property.referentialConstraint) {
-						const refConstraint = doc.createElement('ReferentialConstraint');
-						refConstraint.setAttribute('Property', constraint.property);
-						refConstraint.setAttribute('ReferencedProperty', constraint.referencedProperty);
-						element.appendChild(refConstraint);
-					}
-				}
-				if (property.onDelete) {
-					const onDelete = doc.createElement('OnDelete');
-					onDelete.setAttribute('Action', property.onDelete.action);
-					element.appendChild(onDelete);
-				}
+				this.handleNavigationProperty(doc, property, element);
 			}
 			if (isEdmType(property.type)) {
 				element.setAttribute('Type', property.type);
@@ -119,5 +101,27 @@ export class EdmEntityType<T extends Record<string, unknown> = Record<string, un
 			entityType.appendChild(children);
 		}
 		return entityType;
+	}
+
+	private handleNavigationProperty(doc: Document, property: EdmNavigationProperty, element: Element) {
+		if (property.containsTarget) {
+			element.setAttribute('ContainsTarget', 'true');
+		}
+		if (property.partner) {
+			element.setAttribute('Partner', property.partner);
+		}
+		if (property.referentialConstraint) {
+			for (const constraint of property.referentialConstraint) {
+				const refConstraint = doc.createElement('ReferentialConstraint');
+				refConstraint.setAttribute('Property', constraint.property);
+				refConstraint.setAttribute('ReferencedProperty', constraint.referencedProperty);
+				element.appendChild(refConstraint);
+			}
+		}
+		if (property.onDelete) {
+			const onDelete = doc.createElement('OnDelete');
+			onDelete.setAttribute('Action', property.onDelete.action);
+			element.appendChild(onDelete);
+		}
 	}
 }
